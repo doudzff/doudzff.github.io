@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>روابطي الشخصية</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 40px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .profile-section {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 30px;
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #667eea;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .status-dot {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            background: #4ade80;
+            border: 3px solid white;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+            50% { box-shadow: 0 0 0 10px rgba(74, 222, 128, 0); }
+        }
+
+        .name {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .bio {
+            font-size: 16px;
+            color: #6b7280;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 20px;
+            font-weight: 700;
+            color: #667eea;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+
+        .links-section {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .link-card {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            background: white;
+            border-radius: 16px;
+            text-decoration: none;
+            color: #374151;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .link-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: #667eea;
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .link-card:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+
+        .link-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .link-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+            font-size: 20px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+        .facebook { background: #1877f2; }
+        .twitter { background: #1da1f2; }
+        .youtube { background: #ff0000; }
+        .tiktok { background: #000000; }
+        .snapchat { background: #fffc00; color: #000 !important; }
+        .telegram { background: #0088cc; }
+        .whatsapp { background: #25d366; }
+        .website { background: #667eea; }
+        .email { background: #ea4335; }
+
+        .link-text {
+            flex: 1;
+            text-align: right;
+        }
+
+        .link-arrow {
+            color: #9ca3af;
+            font-size: 14px;
+            transition: transform 0.3s ease;
+        }
+
+        .link-card:hover .link-arrow {
+            transform: translateX(-5px);
+            color: #667eea;
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .social-icon-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin: 0 auto;
+        }
+
+        .social-icon-btn:hover {
+            transform: translateY(-5px) rotate(10deg);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .footer {
+            margin-top: 30px;
+            position: relative;
+            z-index: 1;
+            color: #9ca3af;
+            font-size: 13px;
+        }
+
+        .share-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.8);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #667eea;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            z-index: 2;
+            backdrop-filter: blur(10px);
+        }
+
+        .share-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: rotate(180deg);
+        }
+
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            background: #3b82f6;
+            border-radius: 50%;
+            color: white;
+            font-size: 12px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+                border-radius: 20px;
+            }
+            
+            .name {
+                font-size: 24px;
+            }
+            
+            .social-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+            }
+            
+            .social-icon-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <button class="share-btn" onclick="shareProfile()" title="مشاركة البروفايل">
+            <i class="fas fa-share-alt"></i>
+        </button>
+
+        <div class="profile-section">
+            <div class="avatar-wrapper">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=300&h=300&fit=crop" 
+                     alt="صورة البروفايل" 
+                     class="avatar" 
+                     id="profileImage">
+                <div class="status-dot"></div>
+            </div>
+            
+            <h1 class="name">
+                اسمك هنا
+                <span class="verified-badge"><i class="fas fa-check"></i></span>
+            </h1>
+            <p class="bio">
+                ✨ محتوى إبداعي | 📸 مصور | 🎨 مصمم<br>
+                📩 للتواصل والإعلانات
+            </p>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number">50K+</span>
+                    <span class="stat-label">متابع</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">100+</span>
+                    <span class="stat-label">مشروع</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">5+</span>
+                    <span class="stat-label">سنوات</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="links-section">
+            <a href="https://instagram.com/username" class="link-card" target="_blank">
+                <div class="link-icon instagram">
+                    <i class="fab fa-instagram"></i>
+                </div>
+                <span class="link-text">الإنستغرام</span>
+                <i class="fas fa-chevron-left link-arrow"></i>
+            </a>
+
+            <a href="https://facebook.com/username" class="link-card" target="_blank">
+                <div class="link-icon facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </div>
+                <span class="link-text">الفيسبوك</span>
+                <i class="fas fa-chevron-left link-arrow"></i>
+            </a>
+
+            <a href="https://twitter.com/username" class="link-card" target="_blank">
+                <div class="link-icon twitter">
+                    <i class="fab fa-twitter"></i>
+                </div>
+                <span class="link-text">تويتر / إكس</span>
+                <i class="fas fa-chevron-left link-arrow"></i>
+            </a>
+
+            <a href="https://youtube.com/@username" class="link-card" target="_blank">
+                <div class="link-icon youtube">
+                    <i class="fab fa-youtube"></i>
+                </div>
+                <span class="link-text">يوتيوب</span>
+                <i class="fas fa-chevron-left link-arrow"></i>
+            </a>
+
+            <a href="https://tiktok.com/@username" class="link-card" target="_blank">
+                <div class="link-icon tiktok">
+                    <i class="fab fa-tiktok"></i>
+                </div>
+                <span class="link-text">تيك توك</span>
+                <i class="fas fa-chevron-left link-arrow"></i>
+            </a>
+
+            <a href="https://wa.me/1234567890" class="link-card" target="_blank">
+                <div class="link-icon whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                </div>
+                <span class="link-text">واتساب</span>
+                <i class="fas fa-chevron-left link-arrow"></i>
+            </a>
+
+            <a href="mailto:email@example.com" class="link-card">
+                <div class="link-icon email">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <span class="link-text">البريد الإلكتروني</span>
+                <i class="fas fa-chevron-left link-arrow"></i>
+            </a>
+
+            <a href="https://yourwebsite.com" class="link-card" target="_blank">
+                <div class="link-icon website">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <span class="link-text">موقعي الشخصي</span>
+                <i class="fas fa-chevron-left link-arrow"></i>
+            </a>
+        </div>
+
+        <div class="social-grid">
+            <a href="https://snapchat.com/add/username" class="social-icon-btn snapchat" target="_blank" title="سناب شات">
+                <i class="fab fa-snapchat-ghost"></i>
+            </a>
+            <a href="https://t.me/username" class="social-icon-btn telegram" target="_blank" title="تيليجرام">
+                <i class="fab fa-telegram-plane"></i>
+            </a>
+            <a href="https://linkedin.com/in/username" class="social-icon-btn website" target="_blank" title="لينكد إن">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="https://github.com/username" class="social-icon-btn tiktok" target="_blank" title="جيت هاب">
+                <i class="fab fa-github"></i>
+            </a>
+        </div>
+
+        <div class="footer">
+            <p>Made with <i class="fas fa-heart" style="color: #e74c3c;"></i> using BioLink</p>
+        </div>
+    </div>
+
+    <script>
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        function shareProfile() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'روابطي الشخصية',
+                    text: 'تفضل بزيارة روابطي الشخصية!',
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    alert('تم نسخ الرابط!');
+                });
+            }
+        }
+
+        function animateStats() {
+            const stats = document.querySelectorAll('.stat-number');
+            stats.forEach(stat => {
+                const finalValue = stat.textContent;
+                stat.textContent = '0';
+                let current = 0;
+                const increment = parseInt(finalValue) / 50;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= parseInt(finalValue)) {
+                        stat.textContent = finalValue;
+                        clearInterval(timer);
+                    } else {
+                        stat.textContent = Math.floor(current) + (finalValue.includes('K') ? 'K+' : '+');
+                    }
+                }, 30);
+            });
+        }
+
+        window.addEventListener('load', () => {
+            createParticles();
+            animateStats();
+            
+            document.querySelector('.container').style.opacity = '0';
+            document.querySelector('.container').style.transform = 'translateY(30px)';
+            setTimeout(() => {
+                document.querySelector('.container').style.transition = 'all 0.8s ease';
+                document.querySelector('.container').style.opacity = '1';
+                document.querySelector('.container').style.transform = 'translateY(0)';
+            }, 100);
+        });
+
+        document.querySelectorAll('.link-card').forEach(link => {
+            link.addEventListener('click', function(e) {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+    </script>
+</body>
+  </html>
